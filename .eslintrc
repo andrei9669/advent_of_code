@@ -1,0 +1,9 @@
+{
+  "extends": ["@templeio/eslint-config-templeio"],
+  "rules": {
+    "no-console": 0,
+    "no-loop-func": 0,
+    "no-redeclare": 0,
+    "prefer-const": 0
+  }
+}
