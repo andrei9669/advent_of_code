@@ -1,12 +1,10 @@
-const sumCharCode = (acc: number, cur: string) => {
-  let num;
-  if (/[A-Z]/.test(cur)) {
-    num = cur.charCodeAt(0) - 38;
-  } else {
-    num = cur.charCodeAt(0) - 96;
-  }
-  return acc + num;
-};
+const sumCharCode = (acc: number, cur: string) =>
+  /[A-Z]/.test(cur)
+    ? acc + cur.charCodeAt(0) - 38
+    : acc + cur.charCodeAt(0) - 96;
+
+const filterUndefined = (str: string | undefined): str is string =>
+  Boolean(str);
 
 export const main = (input: string): number =>
   input
@@ -19,28 +17,22 @@ export const main = (input: string): number =>
         .split('')
         .find((letter) => secondHalfHalf.includes(letter));
     })
-    .filter((s): s is string => Boolean(s))
+    .filter(filterUndefined)
     .reduce(sumCharCode, 0);
 
-export const main2 = (input: string): unknown => {
-  let index = 0;
-  return input
+export const main2 = (input: string): unknown =>
+  input
     .split('\n')
-    .filter(Boolean)
     .reduce<string[][]>((acc, cur, i) => {
-      if (i % 3 === 0 && i !== 0) {
-        index += 1;
+      if (i % 3 === 0) {
+        acc.push([]);
       }
-      if (!Array.isArray(acc[index])) {
-        acc[index] = [];
-      }
-      acc[index].push(cur);
+      acc[acc.length - 1].push(cur);
 
       return acc;
     }, [])
     .map(([a, b, c]) =>
       a.split('').find((letter) => b.includes(letter) && c.includes(letter)),
     )
-    .filter((s): s is string => Boolean(s))
+    .filter(filterUndefined)
     .reduce(sumCharCode, 0);
-};
