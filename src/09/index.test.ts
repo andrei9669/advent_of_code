@@ -20,13 +20,14 @@ describe('day 9', () => {
   });
   describe('part 2', () => {
     it('test input1', () => {
-      expect(main2(testInput[0])).toBe(0);
+      expect(main2(testInput[0])).toBe(1);
     });
     it('test input2', () => {
-      expect(main2(testInput[1])).toBe(0);
+      // 31
+      expect(main2(testInput[1])).toBe(36);
     });
     it('main input', () => {
-      expect(main2(mainInput)).toBe(0);
+      expect(main2(mainInput)).toBe(2619);
     });
   });
 });
