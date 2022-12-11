@@ -24,7 +24,7 @@ describe('day 9', () => {
       expect(main2(testInput)).toBe(2713310158);
     });
     it('main input', () => {
-      expect(main2(mainInput)).toBe(0);
+      expect(main2(mainInput)).toBe(15333249714);
     });
   });
 });
