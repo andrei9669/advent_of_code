@@ -23,10 +23,10 @@ describe('day 9', () => {
   });
   describe('part 2', () => {
     it('test input1', () => {
-      expect(main2(testInput)).toBe(0);
+      expect(main2(testInput)).toBe(29);
     });
     it('main input', () => {
-      expect(main2(mainInput)).toBe(0);
+      expect(main2(mainInput)).toBe(508);
     });
   });
 });

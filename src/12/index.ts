@@ -7,27 +7,10 @@ function* getNeighbours(x: number, y: number) {
 
 type Node = { distance: number; previous: string | null };
 
-let prev = [0, 0];
-const render = (vertexes: Set<string>, map: string[][]) => {
-  console.clear();
-  [...vertexes].forEach((el) => {
-    const [y, x] = el.split('_').map(Number);
-    map[prev[0]][prev[1]] = '.';
-    map[y][x] = '█';
-    prev = [y, x];
-  });
-
-  const res = map.map((el) => el.join('')).join('\n');
-  // eslint-disable-next-line no-promise-executor-return -- test
-  console.log(res);
-};
-
 class Graph {
   vertices: string[] = [];
 
   adjacencyList: Record<string, Record<string, number>> = {};
-
-  visited = new Set<string>();
 
   addVertex(vertex: string) {
     this.vertices.push(vertex);
@@ -38,13 +21,11 @@ class Graph {
     this.adjacencyList[vertex1][vertex2] = weight;
   }
 
-  dijkstra(
-    source: string,
-    finish: string,
-  ): [Node | null, string[]] {
+  dijkstra(source: string, finish: string): [Node | null, string[]] {
     let fin: Node | null = null;
     const distances: Record<string, Node> = {};
     const touched: Record<string, Node> = {};
+    const visited = new Set<string>();
     for (let i = 0; i < this.vertices.length; i++) {
       if (this.vertices[i] === source) {
         distances[source] = { distance: 0, previous: source };
@@ -53,7 +34,7 @@ class Graph {
       }
     }
 
-    let currVertex = Graph.vertexWithMinDistance(distances, this.visited);
+    let currVertex = Graph.vertexWithMinDistance(distances, visited);
     while (currVertex !== null) {
       if (currVertex === finish) {
         fin = distances[currVertex];
@@ -71,8 +52,8 @@ class Graph {
           touched[neighbor] = { distance: newDistance, previous: currVertex };
         }
       });
-      this.visited.add(currVertex);
-      currVertex = Graph.vertexWithMinDistance(touched, this.visited);
+      visited.add(currVertex);
+      currVertex = Graph.vertexWithMinDistance(touched, visited);
     }
     let cur = finish;
     let res = [];
@@ -126,6 +107,26 @@ const getWeight = (
 
 const getVertex = (x: number, y: number) =>
   `${y.toString().padStart(5, '0')}_${x.toString().padStart(5, '0')}`;
+const getGraph = (data: string[][]): Graph => {
+  const graph = new Graph();
+
+  data.forEach((row, y) =>
+    row.forEach((cell, x) => {
+      const vertex1 = getVertex(x, y);
+      graph.addVertex(vertex1);
+      // eslint-disable-next-line no-restricted-syntax -- generator
+      for (const [Y, X] of getNeighbours(x, y)) {
+        const vertex2 = getVertex(X, Y);
+        let weight = getWeight(data, [x, y], [X, Y]);
+        if (weight !== undefined) {
+          graph.addEdge(vertex1, vertex2, weight);
+        }
+      }
+    }),
+  );
+  return graph;
+};
+
 export const main = async (input: string): Promise<unknown> => {
   let start = '';
   let end = '';
@@ -143,22 +144,8 @@ export const main = async (input: string): Promise<unknown> => {
     }),
   );
 
-  const graph = new Graph();
+  const graph = getGraph(data);
 
-  data.forEach((row, y) =>
-    row.forEach((cell, x) => {
-      const vertex1 = getVertex(x, y);
-      graph.addVertex(vertex1);
-      // eslint-disable-next-line no-restricted-syntax -- generator
-      for (const [Y, X] of getNeighbours(x, y)) {
-        const vertex2 = getVertex(X, Y);
-        let weight = getWeight(data, [x, y], [X, Y]);
-        if (weight !== undefined) {
-          graph.addEdge(vertex1, vertex2, weight);
-        }
-      }
-    }),
-  );
   const [, res] = graph.dijkstra(start, end);
   const path = res
     .map((el) => {
@@ -169,4 +156,33 @@ export const main = async (input: string): Promise<unknown> => {
   return path.length - 1;
 };
 
-export const main2 = (input: string): unknown => 0;
+export const main2 = (input: string): unknown => {
+  let starts: string[] = [];
+  let end = '';
+  const data: string[][] = input.split('\n').map((row, y) =>
+    row.split('').map((el, x) => {
+      if (el === 'S' || el === 'a') {
+        starts.push(getVertex(x, y));
+        return 'a';
+      }
+      if (el === 'E') {
+        end = getVertex(x, y);
+        return 'z';
+      }
+      return el;
+    }),
+  );
+  const graph = getGraph(data);
+  let fewest = Number.MAX_SAFE_INTEGER;
+  starts.forEach((start) => {
+    try {
+      const [, res] = graph.dijkstra(start, end);
+      if (res.length - 1 < fewest) {
+        fewest = res.length - 1;
+      }
+    } catch (e) {
+      // ignore
+    }
+  });
+  return fewest;
+};
