@@ -18,7 +18,7 @@ describe('day 9', () => {
     });
     it('main input', async () => {
       // 212 too low
-      expect(await main(mainInput)).toBe(0);
+      expect(await main(mainInput)).toBe(520);
     });
   });
   describe('part 2', () => {

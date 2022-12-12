@@ -38,11 +38,10 @@ class Graph {
     this.adjacencyList[vertex1][vertex2] = weight;
   }
 
-  async dijkstra(
+  dijkstra(
     source: string,
     finish: string,
-    map: string[][],
-  ): Promise<[Node | null, string[]]> {
+  ): [Node | null, string[]] {
     let fin: Node | null = null;
     const distances: Record<string, Node> = {};
     const touched: Record<string, Node> = {};
@@ -73,12 +72,6 @@ class Graph {
         }
       });
       this.visited.add(currVertex);
-      const [yy, xx] = currVertex.split('_').map(Number);
-      const stop = map[yy][xx];
-      render(this.visited, map);
-      if (stop === 'm') {
-        debugger;
-      }
       currVertex = Graph.vertexWithMinDistance(touched, this.visited);
     }
     let cur = finish;
@@ -120,8 +113,8 @@ const getWeight = (
   }
   const char1 = el1.charCodeAt(0);
   const char2 = el2.charCodeAt(0);
-  const weight = char1 - char2;
-  // TODO: get weights correct
+  const weight = char2 - char1;
+
   if (weight <= 0) {
     return 1;
   }
@@ -160,17 +153,13 @@ export const main = async (input: string): Promise<unknown> => {
       for (const [Y, X] of getNeighbours(x, y)) {
         const vertex2 = getVertex(X, Y);
         let weight = getWeight(data, [x, y], [X, Y]);
-        const existing = graph.adjacencyList[vertex2];
-        if (existing !== undefined) {
-          weight = existing[vertex1];
-        }
         if (weight !== undefined) {
           graph.addEdge(vertex1, vertex2, weight);
         }
       }
     }),
   );
-  const [distance, res] = await graph.dijkstra(start, end, data);
+  const [, res] = graph.dijkstra(start, end);
   const path = res
     .map((el) => {
       const [y, x] = el.split('_').map(Number);
