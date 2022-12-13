@@ -43,4 +43,14 @@ export const main = (input: string): unknown => {
     .reduce((acc, cur, i) => (cur ? acc + i + 1 : acc), 0);
 };
 
-export const main2 = (input: string): unknown => 0;
+export const main2 = (input: string): unknown => {
+  const data = input.split('\n').filter(Boolean);
+  data.push('[[2]]', '[[6]]');
+  const sortedData = data
+    .map((el) => JSON.parse(el))
+    .sort(isLeftSmallerOrEqual)
+    .map((el) => JSON.stringify(el));
+  const indexOfSix = sortedData.indexOf('[[6]]') + 1;
+  const indexOfTwo = sortedData.indexOf('[[2]]') + 1;
+  return indexOfSix * indexOfTwo;
+};

@@ -17,16 +17,15 @@ describe('day 9', () => {
       expect(main(testInput)).toBe(13);
     });
     it('main input', () => {
-      // 456 too low
       expect(main(mainInput)).toBe(6101);
     });
   });
   describe('part 2', () => {
     it('test input1', () => {
-      expect(main2(testInput)).toBe(0);
+      expect(main2(testInput)).toBe(140);
     });
     it('main input', () => {
-      expect(main2(mainInput)).toBe(0);
+      expect(main2(mainInput)).toBe(21909);
     });
   });
 });
