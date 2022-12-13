@@ -1,38 +1,35 @@
 type NestedArray = number | Array<NestedArray | number>;
 
-const isNumber = (el: unknown | number): el is number =>
-  Number.isFinite(Number(el)) && !Array.isArray(el);
-
-const isLeftSmallerOrEqual = (A: NestedArray, B: NestedArray): boolean => {
+const isLeftSmallerOrEqual = (A: NestedArray, B: NestedArray): number => {
   if (!Array.isArray(A) || !Array.isArray(B)) {
     throw new Error(`invalid input: ${A} ${B}`);
   }
-  let bump = false;
-  if (A.length === 0) {
-    return true;
-  }
-  const isSorE = A.every((a, i) => {
-    const b = B[i];
-    if (b === undefined) {
-      return bump;
-    }
-    let left: NestedArray = a;
-    let right: NestedArray = b;
+  const longest: number = A.length > B.length ? A.length : B.length;
 
-    if (isNumber(left) && isNumber(right)) {
-      return left <= right;
+  for (let i = 0; i < longest; i++) {
+    const l = A[i];
+    const r = B[i];
+
+    if (typeof l === 'number' && typeof r === 'number') {
+      if (l < r) return -1;
+      if (l > r) return 1;
+    } else if (typeof l === 'object' && typeof r === 'object') {
+      const test = isLeftSmallerOrEqual(l, r);
+      if (test !== 0) return test;
+    } else if (typeof l === 'number' && typeof r === 'object') {
+      const test = isLeftSmallerOrEqual([l], r);
+      if (test !== 0) return test;
+    } else if (typeof l === 'object' && typeof r === 'number') {
+      const test = isLeftSmallerOrEqual(l, [r]);
+      if (test !== 0) return test;
+    } else if (l === undefined && r !== undefined) {
+      return -1;
+    } else if (l !== undefined && r === undefined) {
+      return 1;
     }
-    if (!isNumber(left) && isNumber(right)) {
-      bump = true;
-      return left[0] <= right;
-      // right = [right];
-    }
-    if (!isNumber(right) && isNumber(left)) {
-      left = [left];
-    }
-    return isLeftSmallerOrEqual(left, right);
-  });
-  return A.length <= B.length && isSorE;
+  }
+
+  return 0;
 };
 export const main = (input: string): unknown => {
   const groups = input.split('\n\n');
@@ -40,11 +37,10 @@ export const main = (input: string): unknown => {
   return groups
     .map((group) => {
       const [A, B] = group.split('\n').map<NestedArray>((s) => JSON.parse(s));
-      return isLeftSmallerOrEqual(A, B);
+      const val = isLeftSmallerOrEqual(A, B);
+      return val === -1;
     })
-    .map((el, i) => ({ i: i + 1, el }))
-    .filter((el) => el.el)
-    .reduce((acc, cur) => acc + cur.i, 0);
+    .reduce((acc, cur, i) => (cur ? acc + i + 1 : acc), 0);
 };
 
 export const main2 = (input: string): unknown => 0;

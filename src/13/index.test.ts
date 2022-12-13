@@ -18,7 +18,7 @@ describe('day 9', () => {
     });
     it('main input', () => {
       // 456 too low
-      expect(main(mainInput)).toBe(0);
+      expect(main(mainInput)).toBe(6101);
     });
   });
   describe('part 2', () => {
