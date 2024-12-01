@@ -41,6 +41,7 @@ class Graph {
       }
       const element = distances[currVertex];
       if (element !== undefined) {
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete -- legacy
         delete touched[currVertex];
       }
       const { distance } = element;
