@@ -2,14 +2,14 @@ export const sum = (acc: number, cur: number, _i: number): number => acc + cur;
 export const multiply = (acc: number, cur: number, _i: number): number =>
   acc * cur;
 
-type GetNeighboursProps = {
+interface GetNeighboursProps {
   directions?: {
     left?: boolean;
     right?: boolean;
     up?: boolean;
     down?: boolean;
   };
-};
+}
 
 // eslint-disable-next-line complexity -- complex func
 export function* getNeighbours<T>(

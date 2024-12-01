@@ -32,7 +32,7 @@ const getResult = (stacks: string[][]): string =>
 export const main = (input: string): unknown => {
   const [stacks, instructions] = getStackAndInstructions(input);
 
-  instructions?.split('\n').forEach((instruction) => {
+  instructions.split('\n').forEach((instruction) => {
     const [move, from, to] = getInstruction(instruction);
     for (let i = 0; i < move; i++) {
       stacks[to].push(stacks[from].pop() || '');

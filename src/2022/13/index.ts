@@ -1,4 +1,4 @@
-type NestedArray = number | Array<NestedArray | number>;
+type NestedArray = number | (NestedArray | number)[];
 
 const isLeftSmallerOrEqual = (A: NestedArray, B: NestedArray): number => {
   if (!Array.isArray(A) || !Array.isArray(B)) {

@@ -1,16 +1,16 @@
-type File = {
+interface File {
   type: 'file';
   path: string;
   size: number;
   parent?: Directory;
-};
-type Directory = {
+}
+interface Directory {
   type: 'dir';
   size: number;
   path: string;
   children: (Directory | File)[];
   parent?: Directory;
-};
+}
 type Cd = [string, 'cd', string];
 type Ls = [string, 'ls'];
 type Command = Cd | Ls;
@@ -128,7 +128,7 @@ export const main2 = (input: string): unknown => {
     }
   });
   if (dirToRemove !== undefined) {
-    return dirToRemove?.size;
+    return dirToRemove.size;
   }
   return new Error('not found');
 };

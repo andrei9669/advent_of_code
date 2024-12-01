@@ -34,7 +34,7 @@ const pull = (a: [number, number], rope: [number, number][], i = 1) => {
 };
 
 // doesn't work well with negatives
-const print = (() => {
+(() => {
   let width = 1;
   let height = 1;
   return (rope: [number, number][]) => {
@@ -120,7 +120,7 @@ export const main2 = (input: string): unknown => {
   });
 
   const grid = new Set();
-  let rope: [number, number][] = [
+  const rope: [number, number][] = [
     [0, 0],
     [0, 0],
     [0, 0],

@@ -5,7 +5,7 @@ function* getNeighbours(x: number, y: number) {
   yield [y + 1, x];
 }
 
-type Node = { distance: number; previous: string | null };
+interface Node { distance: number; previous: string | null }
 
 class Graph {
   vertices: string[] = [];
@@ -26,11 +26,11 @@ class Graph {
     const distances: Record<string, Node> = {};
     const touched: Record<string, Node> = {};
     const visited = new Set<string>();
-    for (let i = 0; i < this.vertices.length; i++) {
-      if (this.vertices[i] === source) {
+    for (const item of this.vertices) {
+      if (item === source) {
         distances[source] = { distance: 0, previous: source };
       } else {
-        distances[this.vertices[i]] = { distance: Infinity, previous: null };
+        distances[item] = { distance: Infinity, previous: null };
       }
     }
 
@@ -40,7 +40,9 @@ class Graph {
         fin = distances[currVertex];
       }
       const element = distances[currVertex];
-      if (element !== undefined) delete touched[currVertex];
+      if (element !== undefined) {
+        delete touched[currVertex];
+      }
       const { distance } = element;
 
       const neighbors = this.adjacencyList[currVertex];
@@ -56,7 +58,7 @@ class Graph {
       currVertex = Graph.vertexWithMinDistance(touched, visited);
     }
     let cur = finish;
-    let res = [];
+    const res = [];
     res.push(cur);
     while (cur !== source) {
       const el = distances[cur];
@@ -87,8 +89,8 @@ const getWeight = (
   [x, y]: [number, number],
   [X, Y]: [number, number],
 ): number | undefined => {
-  let el1 = inputNumbers[y]?.[x];
-  let el2 = inputNumbers[Y]?.[X];
+  const el1 = inputNumbers[y]?.[x];
+  const el2 = inputNumbers[Y]?.[X];
   if (el1 === undefined || el2 === undefined) {
     return undefined;
   }
@@ -111,18 +113,18 @@ const getGraph = (data: string[][]): Graph => {
   const graph = new Graph();
 
   data.forEach((row, y) =>
-    row.forEach((cell, x) => {
+    { row.forEach((cell, x) => {
       const vertex1 = getVertex(x, y);
       graph.addVertex(vertex1);
       // eslint-disable-next-line no-restricted-syntax -- generator
       for (const [Y, X] of getNeighbours(x, y)) {
         const vertex2 = getVertex(X, Y);
-        let weight = getWeight(data, [x, y], [X, Y]);
+        const weight = getWeight(data, [x, y], [X, Y]);
         if (weight !== undefined) {
           graph.addEdge(vertex1, vertex2, weight);
         }
       }
-    }),
+    }); },
   );
   return graph;
 };
@@ -157,7 +159,7 @@ export const main = async (input: string): Promise<unknown> => {
 };
 
 export const main2 = (input: string): unknown => {
-  let starts: string[] = [];
+  const starts: string[] = [];
   let end = '';
   const data: string[][] = input.split('\n').map((row, y) =>
     row.split('').map((el, x) => {
@@ -180,7 +182,7 @@ export const main2 = (input: string): unknown => {
       if (res.length - 1 < fewest) {
         fewest = res.length - 1;
       }
-    } catch (e) {
+    } catch (_e) {
       // ignore
     }
   });

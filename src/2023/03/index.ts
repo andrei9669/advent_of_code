@@ -1,6 +1,6 @@
 import { getNeighbours, multiply, sum } from '../../utility';
 
-const isSymbol = (s: string) => !!s.match(/([^0-9.])/);
+const isSymbol = (s: string) => !!(/([^0-9.])/.exec(s));
 
 export const main = (input: string): number => {
   const map = input.split('\n').map((row) => row.split(''));
@@ -35,7 +35,7 @@ export const main = (input: string): number => {
   return partNumbers.reduce(sum);
 };
 
-type NumberHolder = { value: '' };
+interface NumberHolder { value: '' }
 export const main2 = (input: string): number => {
   const map = input.split('\n').map((row) => row.split(''));
   const numberMap: (NumberHolder | string)[][] = [];
@@ -59,7 +59,7 @@ export const main2 = (input: string): number => {
     .flatMap((row, y) =>
       row.map((el, x) => {
         if (el === '*') {
-          let neighbourNumbers: Set<number> = new Set();
+          const neighbourNumbers = new Set<number>();
           // eslint-disable-next-line no-restricted-syntax -- generator
           for (const neighbourEl of getNeighbours(numberMap, x, y)) {
             if (typeof neighbourEl !== 'string') {

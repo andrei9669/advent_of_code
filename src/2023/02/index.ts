@@ -4,7 +4,7 @@ export const main = (input: string): number =>
   input
     .split('\n')
     .map((row) => {
-      const rowMatch = row.match(/(Game (?<game>\d+):) (.+)/);
+      const rowMatch = /(Game (?<game>\d+):) (.+)/.exec(row);
       if (!rowMatch) {
         return 0;
       }
@@ -13,9 +13,9 @@ export const main = (input: string): number =>
       const isPossible = rest
         .split(';')
         .map((round) => {
-          const [, red] = round.match(/(\d+) red/) ?? [];
-          const [, green] = round.match(/(\d+) green/) ?? [];
-          const [, blue] = round.match(/(\d+) blue/) ?? [];
+          const [, red] = (/(\d+) red/.exec(round)) ?? [];
+          const [, green] = (/(\d+) green/.exec(round)) ?? [];
+          const [, blue] = (/(\d+) blue/.exec(round)) ?? [];
 
           return !(
             Number(red ?? 0) > 12 ||
@@ -32,17 +32,17 @@ export const main2 = (input: string): number =>
   input
     .split('\n')
     .map((row) => {
-      const rowMatch = row.match(/(Game (?<game>\d+):) (?<rest>.+)/);
+      const rowMatch = /(Game (?<game>\d+):) (?<rest>.+)/.exec(row);
       if (!rowMatch?.groups) {
         return 0;
       }
-      const { game, rest } = rowMatch.groups;
+      const { rest } = rowMatch.groups;
       const res = rest
         .split(';')
         .map((round) => {
-          const [, red] = (round.match(/(\d+) red/) ?? []).map(Number);
-          const [, green] = (round.match(/(\d+) green/) ?? []).map(Number);
-          const [, blue] = (round.match(/(\d+) blue/) ?? []).map(Number);
+          const [, red] = ((/(\d+) red/.exec(round)) ?? []).map(Number);
+          const [, green] = ((/(\d+) green/.exec(round)) ?? []).map(Number);
+          const [, blue] = ((/(\d+) blue/.exec(round)) ?? []).map(Number);
           return { red, green, blue };
         })
         .reduce(

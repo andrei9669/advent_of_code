@@ -24,13 +24,13 @@ export const main2 = (input: string): number =>
   input
     .split('\n')
     .map((str) => {
-      let regex =
+      const regex =
         /(?=(zero|one|two|three|four|five|six|seven|eight|nine|[0-9]))/gi;
-      let matches: string[] = [];
+      const matches: string[] = [];
       let index = 0;
 
       while (index < str.length) {
-        let match = regex.exec(str);
+        const match = regex.exec(str);
         if (match !== null) {
           const match1 = match[1];
           matches.push(wordToNumber[match1] ?? match1);
