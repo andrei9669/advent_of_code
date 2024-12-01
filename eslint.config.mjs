@@ -1,3 +1,5 @@
+// @ts-check
+
 import pluginJs from "@eslint/js";
 import tseslint from "typescript-eslint";
 import comments from "@eslint-community/eslint-plugin-eslint-comments/configs";
