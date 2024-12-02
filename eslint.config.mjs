@@ -26,6 +26,7 @@ export default tseslint.config(
         { argsIgnorePattern: "^_", caughtErrorsIgnorePattern: "^_" },
       ],
       "@typescript-eslint/no-unnecessary-condition": "off",
+      "@typescript-eslint/strict-boolean-expressions": "error"
     },
   },
   {
