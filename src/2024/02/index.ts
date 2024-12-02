@@ -33,51 +33,54 @@ export const main = (input: string): number => {
   return res.length;
 };
 
-const validateNumbers =
-  (isDampenerTriggered = false) =>
-  (row: number[]): boolean => {
-    let directionIsIncreasing: boolean | null = null;
-    let prev: number = row[0];
+const validateNumbers = (
+  row: number[],
+  isDampenerTriggered = false,
+): boolean => {
+  let directionIsIncreasing: boolean | null = null;
+  let prev: number = row[0];
 
-    for (let i = 1; i < row.length; i++) {
-      const num = row[i];
-      const diff = prev - num;
+  for (let i = 1; i < row.length; i++) {
+    const num = row[i];
+    const diff = prev - num;
 
-      if (
-        diff >= 1 &&
-        diff <= 3 &&
-        (directionIsIncreasing === null || !directionIsIncreasing)
-      ) {
-        directionIsIncreasing = false;
-        prev = num;
-      } else if (
-        diff <= -1 &&
-        diff >= -3 &&
-        (directionIsIncreasing === null || directionIsIncreasing)
-      ) {
-        directionIsIncreasing = true;
-        prev = num;
-      } else if (!isDampenerTriggered) {
-        const removedCurrent = [...row].toSpliced(i, 1);
-        const removedPrevious = [...row].toSpliced(i - 1, 1);
-        return (
-          validateNumbers(true)(removedCurrent) ||
-          validateNumbers(true)(removedPrevious)
-        );
-      } else {
-        return false;
-      }
+    if (
+      diff >= 1 &&
+      diff <= 3 &&
+      (directionIsIncreasing === null || !directionIsIncreasing)
+    ) {
+      directionIsIncreasing = false;
+      prev = num;
+    } else if (
+      diff <= -1 &&
+      diff >= -3 &&
+      (directionIsIncreasing === null || directionIsIncreasing)
+    ) {
+      directionIsIncreasing = true;
+      prev = num;
+    } else if (!isDampenerTriggered) {
+      const removedCurrent = [...row].toSpliced(i, 1);
+      const removedPrevious = [...row].toSpliced(i - 1, 1);
+      return (
+        validateNumbers(removedCurrent, true) ||
+        validateNumbers(removedPrevious, true)
+      );
+    } else {
+      return false;
     }
+  }
 
-    return true;
-  };
+  return true;
+};
 
 export const main2 = (input: string): number => {
   const data = input
     .split("\n")
     .map((row) => row.split(" ").map((str) => Number(str)));
 
-  const res = data.filter((row)=>validateNumbers()(row) || validateNumbers()(row.toReversed()));
+  const res = data.filter(
+    (row) => validateNumbers(row) || validateNumbers(row.toReversed()),
+  );
 
   return res.length;
 };
