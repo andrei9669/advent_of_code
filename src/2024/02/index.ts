@@ -77,9 +77,7 @@ export const main2 = (input: string): number => {
     .split("\n")
     .map((row) => row.split(" ").map((str) => Number(str)));
 
-  const res = data.filter(validateNumbers());
+  const res = data.filter((row)=>validateNumbers()(row) || validateNumbers()(row.toReversed()));
 
-  const test = data.filter((row) => !validateNumbers()(row));
-  console.log(test);
   return res.length;
 };
