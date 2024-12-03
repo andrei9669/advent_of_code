@@ -20,11 +20,11 @@ describe('main', () => {
 describe('main2', () => {
   it('test input', () => {
     expect(main2(testInput)).toBe(48);
+    expect(main2("xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))don't()do()mul(1,2)don't()do()mul(1,2)")).toBe(52);
   });
   it('main input', () => {
-    expect(main2("xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))don't()do()mul(1,2)don't()do()mul(1,2)")).not.toBe(52);
     expect(main2(mainInput)).not.toBe(63247111);
     expect(main2(mainInput)).toBeGreaterThan(57374242);
-    expect(main2(mainInput)).toBe(0);
+    expect(main2(mainInput)).toBe(63866497);
   });
 });
