@@ -33,15 +33,9 @@ export function main2(input: string): number {
         } = res;
         sum += Number(left) * Number(right);
       }
-      const doNotMatch = input.substring(i).match(doNotRegex);
-      if (doNotMatch) {
-        doMul = false;
-      }
+      doMul = !input.substring(i).match(doNotRegex);
     } else {
-      const doMatch = input.substring(i).match(doRegex);
-      if (doMatch) {
-        doMul = true;
-      }
+      doMul = !!input.substring(i).match(doRegex);
     }
   }
 
