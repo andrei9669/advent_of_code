@@ -17,7 +17,7 @@ export interface GetNeighboursProps {
 
 interface GetNeighboursResult<T> {
   value: T;
-  indexes: [x: number, y: number];
+  indexes: [y: number, x: number];
   direction: GetNeighboursProps;
 }
 
