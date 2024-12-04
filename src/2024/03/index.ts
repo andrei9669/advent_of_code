@@ -26,7 +26,7 @@ export function main2(input: string): number {
   for (let i = 0; i < input.length; i++) {
     mulRegex.lastIndex = 0;
     if (doMul) {
-      let res = mulRegex.exec(input.substring(i));
+      const res = mulRegex.exec(input.substring(i));
       if (res?.groups) {
         const {
           groups: { left, right },
