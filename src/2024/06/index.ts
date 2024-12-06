@@ -115,11 +115,6 @@ export function main2(input: string): number {
       }
     }
   }
-  const directions: GetNeighboursProps = {
-    directions: {
-      up: true,
-    },
-  };
 
   if (!startCoords) {
     return 0;
@@ -141,13 +136,16 @@ export function main2(input: string): number {
     });
     return acc;
   }, []);
-  const res: [number, number][] = [];
 
   defaultPath.forEach(({ y, x }, i) => {
     console.log("Progress", i, "/", defaultPath.length - 1);
     let newStart = structuredClone(startCoords);
-    const mapClone = structuredClone(map);
-    const clonedDirection = structuredClone(directions);
+    const mapClone = reset(map);
+    const clonedDirection: GetNeighboursProps = {
+      directions: {
+        up: true,
+      },
+    };
     mapClone[y][x] = {
       value: "#",
       directions: {
@@ -172,17 +170,34 @@ export function main2(input: string): number {
         if (haveVisited(value, clonedDirection)) {
           inMap = false;
           loops += 1;
-          res.push([y + 1, x + 1]);
           break;
         }
         setUpdatedDirections(value, clonedDirection);
       }
     }
+
+    mapClone[y][x] = {
+      value: ".",
+    };
   });
 
-  console.log(res);
-
   return loops;
+}
+
+function reset(map: Cell[][]) {
+  map.forEach((row) => {
+    row.forEach((cell) => {
+      if (cell.value === "#") {
+        cell.directions = {
+          up: false,
+          right: false,
+          down: false,
+          left: false,
+        };
+      }
+    });
+  });
+  return map;
 }
 
 function setUpdatedDirections(cell: Cell, guardDirection: GetNeighboursProps): Cell {
