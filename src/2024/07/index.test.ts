@@ -19,9 +19,9 @@ describe('main', () => {
 });
 describe('main2', () => {
   it('test input', () => {
-    expect(main2(testInput)).toBe(0);
+    expect(main2(testInput)).toBe(11387);
   });
   it('main input', () => {
-    expect(main2(mainInput)).toBe(0);
+    expect(main2(mainInput)).toBe(70597497486371);
   });
 });
