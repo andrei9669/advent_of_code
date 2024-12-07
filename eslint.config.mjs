@@ -25,7 +25,7 @@ export default tseslint.config(
       "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_", caughtErrorsIgnorePattern: "^_" }],
       "@typescript-eslint/no-unnecessary-condition": "off",
       "@typescript-eslint/strict-boolean-expressions": ["error", { allowNullableBoolean: true }],
-      "@typescript-eslint/ restrict-template-expressions": ["error", { allowNumber: true }],
+      "@typescript-eslint/restrict-template-expressions": ["error", { allowNumber: true }],
 
       "no-shadow": ["error", { ignoreOnInitialization: true, hoist: "all" }],
     },
